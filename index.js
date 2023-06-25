@@ -2,6 +2,8 @@ const fs = require("fs");
 
 let resultOutput = "";
 
+const startCoins = 1000000;
+
 const main = () => {
   const input = fs.readFileSync("./input.txt", "utf8");
 
@@ -73,7 +75,7 @@ const getCountryCities = (country) => {
       for (let y = country.coordinates.yl; y <= country.coordinates.yh; y++) {
         const countryName = country.name;
         const coins = {
-          [countryName]: 1000000,
+          [countryName]: startCoins,
         };
 
         const city = {
@@ -115,10 +117,12 @@ const simulateEuroDiffusion = (countries, cities, motifs) => {
       }
     }
 
+    const isContryAlone = countries.length === 1 ? 0 : day;
+
     handleCountriesBecameCompleted(
       countries,
       allCountriesNames,
-      countries.length === 1 ? 0 : day
+      isContryAlone,
     );
   }
 
