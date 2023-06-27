@@ -3,6 +3,7 @@ const fs = require("fs");
 let resultOutput = "";
 
 const startCoins = 1000000;
+const coinsPart = 1000;
 
 const main = () => {
   const input = fs.readFileSync("./input.txt", "utf8");
@@ -30,6 +31,12 @@ const main = () => {
     } else {
       const countryData = line.split(" ");
       motifs.push(countryData[0]);
+
+      for(let i = 1; i < 5; i++) {
+        if(parseInt(countryData[1]) < 1 || parseInt(countryData[1]) > 10) {
+          throw new Error('Invalid coordinates');
+        }
+      }
 
       const countryInfo = {
         name: countryData[0],
@@ -164,10 +171,7 @@ const simulateEuroDiffusion = (countries, cities, motifs) => {
       { x, y: y - 1 },
       { x: x + 1, y },
       { x, y: y + 1 },
-      {
-        x: x - 1,
-        y,
-      },
+      { x: x - 1, y },
     ];
 
     return cities.reduce((acc, city) => {
@@ -186,7 +190,7 @@ const simulateEuroDiffusion = (countries, cities, motifs) => {
     for (const neighborCity of neighborCities) {
       for (const motif in city.startDayCoins) {
         const coinsToTransport = Math.floor(
-          city.startDayCoins[motif] / 1000
+          city.startDayCoins[motif] / coinsPart
         );
 
         if (coinsToTransport > 0) {
